@@ -6,7 +6,9 @@ class CKSimpleFormPlugin extends MantisPlugin {
         $this->version     = '1.0.0';
         $this->requires    = array( 'MantisCore' => '2.25.0' );
         $this->author      = 'CKNext';
-        $this->page        = 'form'; // default page if someone clicks plugin
+        // $this->page        = 'form'; // default page if someone clicks plugin
+        $this->page = 'list'; // ⬅ default page = list
+
     }
     function config() {
         return array('access_threshold' => MANAGER); // who can see/use
@@ -18,7 +20,8 @@ class CKSimpleFormPlugin extends MantisPlugin {
         if( access_has_global_level( plugin_config_get('access_threshold') ) ) {
             return array( array(
                 'title' => 'Simple Form',
-                'url'   => plugin_page('form'),
+                // 'url'   => plugin_page('form'),
+                'url'   => plugin_page('list'),
                 'icon'  => 'fa-clipboard'
             ) );
         }
