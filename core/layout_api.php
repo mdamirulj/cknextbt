@@ -720,6 +720,14 @@ function layout_print_sidebar( $p_active_sidebar_page = null ) {
 			);
 		}
 
+		# Chart Page
+		$t_sidebar_items[] = array(
+			'url' => 'custom_chart.php',
+			'title' => 'Chart',
+			'icon' => 'fa-line-chart',
+			// 'access_level' => config_get( 'view_changelog_threshold' )
+		);
+
 		# Changelog Page
 		$t_sidebar_items[] = array(
 			'url' => 'changelog_page.php',

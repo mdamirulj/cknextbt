@@ -993,7 +993,7 @@ $s_manage_link = 'Manage';
 $s_edit_news_link = 'Edit News';
 $s_docs_link = 'Docs';
 $s_logout_link = 'Logout';
-$s_my_view_link = 'My View';
+$s_my_view_link = 'Dashboard';
 $s_invite_users = 'Invite Users';
 
 # my_view_page.php
