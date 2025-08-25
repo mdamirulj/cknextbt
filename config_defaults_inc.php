@@ -1225,7 +1225,7 @@ $g_font_family_choices_local = array(
  *
  * @global string $g_window_title
  */
-$g_window_title = 'MantisBT';
+$g_window_title = 'CKNext';
 
 /**
  * OpenSearch engine title prefix.
@@ -1256,14 +1256,14 @@ $g_admin_checks = ON;
  *
  * @global string $g_favicon_image
  */
-$g_favicon_image = 'images/favicon.ico';
+$g_favicon_image = 'images/cknext_logo.png';
 
 /**
  * Logo.
  *
  * @global string $g_logo_image
  */
-$g_logo_image = 'images/mantis_logo.png';
+$g_logo_image = 'images/cknext_logo.png';
 
 /**
  * Logo URL link.
@@ -3919,23 +3919,23 @@ $g_view_all_cookie = '%cookie_prefix%_VIEW_ALL_COOKIE';
 
 /**
  * Collapse settings cookie.
- * 
+ *
  * Stores the open/closed state of the collapsible sections.
- * 
+ *
  * @global string $g_collapse_settings_cookie
  */
 $g_collapse_settings_cookie = '%cookie_prefix%_collapse_settings';
 
 /**
  * Stores the filter criteria for the Manage User page.
- * 
+ *
  * @global string $g_manage_users_cookie
  */
 $g_manage_users_cookie = '%cookie_prefix%_MANAGE_USERS_COOKIE';
 
 /**
  * Stores the filter criteria for the Manage Config Report page.
- * 
+ *
  * @global string $g_manage_config_cookie
  */
 $g_manage_config_cookie = '%cookie_prefix%_MANAGE_CONFIG_COOKIE';
@@ -4001,7 +4001,7 @@ $g_use_dynamic_filters = ON;
  * The threshold required for users to be able to create permalinks.
  *
  * To turn off this feature use NOBODY.
- * 
+ *
  * @global int $g_create_permalink_threshold
  */
 $g_create_permalink_threshold = DEVELOPER;
@@ -4086,7 +4086,7 @@ $g_status_enum_string = '10:new,20:feedback,30:acknowledged,40:confirmed,50:assi
  * bug_change_status_page.php). Embedded spaces are converted to underscores
  * (e.g., "working on" references $s_working_on_bug_title). They are also
  * expected to be English names for the states
- * 
+ *
  * @global string $g_resolution_enum_string
  */
 $g_resolution_enum_string = '10:open,20:fixed,30:reopened,40:unable to duplicate,50:not fixable,60:duplicate,70:not a bug,80:suspended,90:wont fix';
@@ -4135,14 +4135,14 @@ $g_custom_field_type_enum_string = '0:string,1:numeric,2:float,3:enum,4:email,5:
  * users should uncomment the appropriate line in their php.ini files to load
  * the zlib DLL. You can check what extensions are loaded by running "php -m"
  * at the command line (look for 'zlib').
- * 
+ *
  * @global int $g_compress_html
  */
 $g_compress_html = ON;
 
 /**
  * Use persistent database connections.
- * 
+ *
  * @global int $g_use_persistent_connections
  */
 $g_use_persistent_connections = OFF;
@@ -4153,7 +4153,7 @@ $g_use_persistent_connections = OFF;
 
 /**
  * Specify your top/bottom include file (logos, banners, etc).
- * 
+ *
  * @global string $g_bottom_include_page
  */
 $g_bottom_include_page = '%absolute_path%';
@@ -4175,14 +4175,14 @@ $g_top_include_page = '%absolute_path%';
 
 /**
  * CSS file.
- * 
+ *
  * @global string $g_css_include_file
  */
 $g_css_include_file = 'default.css';
 
 /**
  * RTL CSS file.
- * 
+ *
  * @global string $g_css_rtl_include_file
  */
 $g_css_rtl_include_file = 'rtl.css';
@@ -4195,7 +4195,7 @@ $g_css_rtl_include_file = 'rtl.css';
  *
  * This can be disabled if MantisBT shouldn't reach out outside of the
  * corporate network.
- * 
+ *
  * @global int $g_cdn_enabled
  */
 $g_cdn_enabled = OFF;
