@@ -347,9 +347,9 @@ function layout_body_javascript() {
 function layout_login_page_begin( $p_page_title = '' ) {
 	# Login page shouldn't be indexed by search engines
 	html_robots_noindex();
-	
+
 	layout_page_header_begin( $p_page_title );
-	
+
 	event_signal( 'EVENT_LAYOUT_RESOURCES' );
 	html_head_end();
 
@@ -1151,8 +1151,7 @@ function layout_footer() {
 	}
 	echo '<div class="col-md-6 col-xs-12 no-padding">' . "\n";
 	echo '<address>' . "\n";
-	echo '<strong>Powered by <a href="https://www.mantisbt.org" title="bug tracking software">MantisBT ' . $t_version_suffix . '</a></strong> <br>' . "\n";
-	echo "<small>Copyright &copy;$t_copyright_years MantisBT Team</small>" . '<br>';
+	echo '<strong>Powered by <a href="https://cknext.com/" title="bug tracking software">CKNEXT SOLUTIONS SDN. BHD. ' . $t_version_suffix . '</a></strong> <br>' . "\n";
 
 	# Show optional user-specified custom copyright statement
 	$t_copyright_statement = config_get_global( 'copyright_statement' );
@@ -1161,10 +1160,10 @@ function layout_footer() {
 	}
 
 	# Show contact information
-	if( !is_page_name( 'login_page' ) ) {
-		$t_webmaster_contact_information = sprintf( lang_get( 'webmaster_contact_information' ), string_html_specialchars( config_get_global( 'webmaster_email' ) ) );
-		echo '<small>' . $t_webmaster_contact_information . '</small>' . '<br>' . "\n";
-	}
+	// if( !is_page_name( 'login_page' ) ) {
+	// 	$t_webmaster_contact_information = sprintf( lang_get( 'webmaster_contact_information' ), string_html_specialchars( config_get_global( 'webmaster_email' ) ) );
+	// 	echo '<small>' . $t_webmaster_contact_information . '</small>' . '<br>' . "\n";
+	// }
 
 	echo '</address>' . "\n";
 	echo '</div>' . "\n";
@@ -1175,9 +1174,9 @@ function layout_footer() {
 	if( !is_page_name( 'login_page' ) ) {
 		echo '<div class="col-md-6 col-xs-12">' . "\n";
 		echo '<div class="pull-right" id="powered-by-mantisbt-logo">' . "\n";
-		$t_mantisbt_logo_url = helper_mantis_url( 'images/mantis_logo.png' );
+		$t_mantisbt_logo_url = helper_mantis_url( 'images/cknext_logo.png' );
 		echo '<a href="https://www.mantisbt.org" '.
-			'title="Mantis Bug Tracker: a free and open source web based bug tracking system.">' .
+			'title="CKNext Bug Tracker: a free and open source web based bug tracking system.">' .
 			'<img src="' . $t_mantisbt_logo_url . '" width="102" height="35" ' .
 			'alt="Powered by Mantis Bug Tracker: a free and open source web based bug tracking system." />' .
 			'</a>' . "\n";
