@@ -159,15 +159,54 @@ foreach( $t_boxes as $t_box_title => $t_box_display ) {
 </div>
 
 <?php if( $t_timeline_view_threshold_access ) { ?>
-<div class="col-xs-12 col-md-5">
-	<?php
-		# Build a simple filter that gets all bugs for current project
-		$g_timeline_filter = array();
-		$g_timeline_filter[FILTER_PROPERTY_HIDE_STATUS] = array( META_FILTER_NONE );
-		$g_timeline_filter = filter_ensure_valid_filter( $g_timeline_filter );
-		include( 'timeline_inc.php' );
-	?>
-	<div class="space-10"></div>
-</div>
-<?php }
+  <div class="col-xs-12 col-md-5">
+    <?php
+      # Build a simple filter that gets all bugs for current project
+      $g_timeline_filter = array();
+      $g_timeline_filter[FILTER_PROPERTY_HIDE_STATUS] = array( META_FILTER_NONE );
+      $g_timeline_filter = filter_ensure_valid_filter( $g_timeline_filter );
+      include( 'timeline_inc.php' );
+    ?>
+
+    <div class="space-10"></div>
+
+    <!-- Dummy charts under Timeline (INSIDE the col-md-5) -->
+    <div class="widget-box widget-color-blue2">
+      <div class="widget-header">
+        <h4 class="widget-title lighter">
+          <i class="fa fa-chart-bar"></i>
+          Quick Charts
+        </h4>
+      </div>
+      <div class="widget-body">
+        <div class="widget-main">
+          <div class="row">
+            <div class="col-xs-12">
+              <div style="height:180px">
+                <canvas id="myOpenResolvedChart"></canvas>
+              </div>
+            </div>
+          </div>
+
+          <div class="space-10"></div>
+
+          <div class="row">
+            <div class="col-xs-12">
+              <div style="height:200px">
+                <canvas id="myStatusChart"></canvas>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div><!-- /widget-box -->
+
+    <div class="space-10"></div>
+  </div><!-- /col-md-5 -->
+<?php } ?>
+
+<?php
+html_javascript_link('assets/js/chart.umd.min.js');
+html_javascript_link('assets/js/my_custom_charts_dashboard.js');
+
 layout_page_end();
