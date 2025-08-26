@@ -729,20 +729,20 @@ function layout_print_sidebar( $p_active_sidebar_page = null ) {
 		);
 
 		# Changelog Page
-		$t_sidebar_items[] = array(
-			'url' => 'changelog_page.php',
-			'title' => 'changelog_link',
-			'icon' => 'fa-retweet',
-			'access_level' => config_get( 'view_changelog_threshold' )
-		);
+		// $t_sidebar_items[] = array(
+		// 	'url' => 'changelog_page.php',
+		// 	'title' => 'changelog_link',
+		// 	'icon' => 'fa-retweet',
+		// 	'access_level' => config_get( 'view_changelog_threshold' )
+		// );
 
 		# Roadmap Page
-		$t_sidebar_items[] = array(
-			'url' => 'roadmap_page.php',
-			'title' => 'roadmap_link',
-			'icon' => 'fa-road',
-			'access_level' => config_get( 'roadmap_view_threshold' )
-		);
+		// $t_sidebar_items[] = array(
+		// 	'url' => 'roadmap_page.php',
+		// 	'title' => 'roadmap_link',
+		// 	'icon' => 'fa-road',
+		// 	'access_level' => config_get( 'roadmap_view_threshold' )
+		// );
 
 		# Summary Page
 		$t_sidebar_items[] = array(
