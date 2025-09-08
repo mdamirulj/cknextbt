@@ -8,6 +8,8 @@ require_api('config_api.php');
 require_api('lang_api.php');
 
 auth_ensure_user_authenticated();
+# (NEW) timezone + header strings
+date_default_timezone_set('Asia/Kuala_Lumpur');
 
 # Get current project
 $t_project_id = helper_get_current_project();
@@ -44,6 +46,14 @@ ob_start();
 </style>
 </head>
 <body>
+
+<div id="pdf-header">
+  <hr />
+  <div style="float: left;">CKNextBT • cknext bug tracker</div>
+  <div style="float: right;">Event <?= date('Y M d, H:i:s') ?></div>
+</div>
+<div style="clear: both;"></div>
+
 <h2>Issues — <?= string_display_line(project_get_name($t_project_id)); ?></h2>
 <table>
   <th>ID</th>
