@@ -12,10 +12,11 @@ require_api('helper_api.php');
 require_api('config_api.php');
 require_api('lang_api.php');
 require_api('string_api.php');
-
+require_api('custom_field_api.php');
 require_api('category_api.php');
 require_api('user_api.php');
 require_api('bugnote_api.php');
+require_api('database_api.php');      // <-- needed for db_get_table / db_query
 
 auth_ensure_user_authenticated();
 date_default_timezone_set('Asia/Kuala_Lumpur');
@@ -38,23 +39,62 @@ function hours_between($from_ts, $to_ts){
     return number_format($diff / 3600, 2);
 }
 
+/**
+ * Read the custom field TEXT (fallback to VALUE if TEXT is empty) for a bug.
+ * @param int $bug_id
+ * @param int $field_id   Custom field id, e.g. 3 for "Action"
+ * @return string
+ */
+function get_cf_text_for_bug(int $bug_id, int $field_id): string {
+    $t_table = db_get_table('mantis_custom_field_string_table');
+    $sql = 'SELECT COALESCE(NULLIF(text, \'\'), value) AS content
+            FROM ' . $t_table . '
+            WHERE bug_id = ' . db_param() . ' AND field_id = ' . db_param() . '
+            LIMIT 1';
+    $rs = db_query($sql, [$bug_id, $field_id]);
+
+    if (db_num_rows($rs) < 1) {
+        error_log("[PDF] CF row NOT FOUND for bug_id={$bug_id} field_id={$field_id}");
+        return '';
+    }
+    $row = db_fetch_array($rs);
+    $content = trim((string)$row['content']);
+
+    if ($content === '') {
+        error_log("[PDF] CF row EMPTY for bug_id={$bug_id} field_id={$field_id}");
+    } else {
+        error_log("[PDF] CF row FOUND for bug_id={$bug_id} field_id={$field_id} len=" . strlen($content));
+    }
+    return $content;
+}
+
+# --- Get the current filter rows (your existing code) ---
+$t_project_id = helper_get_current_project();
+$f_page_number = 1; $t_per_page = -1;
+$t_page_count = 0; $t_bug_count = 0;
+
+$t_rows = filter_get_bug_rows(
+    $f_page_number, $t_per_page, $t_page_count, $t_bug_count,
+    null, $t_project_id, null, /* user id */ null, true
+);
+
 $t_project_id = helper_get_current_project();
 
 /** Use active "View Issues" filter */
 $f_page_number = 1; $t_per_page = -1; // -1 => all in filter
 $t_page_count = 0; $t_bug_count = 0;
 
-$t_rows = filter_get_bug_rows(
-    $f_page_number, $t_per_page, $t_page_count, $t_bug_count,
-    null,             // p_custom_filter (null -> active)
-    $t_project_id,    // project
-    null,             // user
-    true              // use sticky filter
-);
-
 /** Collect a light structure we can render cleanly */
 $events = [];
 $counter = 1;
+
+// Resolve field id by name (or hardcode the id if you know it)
+$action_field_id = custom_field_get_id_from_name('Action');
+if ($action_field_id === false) {
+    // fallback if your field is known to be id=3
+    $action_field_id = 3;
+    error_log('[PDF] CF "Action" not found by name; falling back to id=3');
+}
 
 foreach ($t_rows as $row) {
     $bug_id        = (int)$row->id;
@@ -64,13 +104,20 @@ foreach ($t_rows as $row) {
     $status_name   = get_enum_element('status', (int)$row->status);
 
     // Action: latest visible bugnote (fallback "-")
-    $action_text = '-';
-    $notes = bugnote_get_all_visible_bugnotes($bug_id, auth_get_current_user_id(), 0);
+    // $action_text = '-';
+    // $notes = bugnote_get_all_visible_bugnotes($bug_id, auth_get_current_user_id(), 0);
     
-    if (!empty($notes)) {
-        // take latest note text
-        $last = end($notes);
-        $action_text = string_display_links($last->note ?? '-');
+    // if (!empty($notes)) {
+    //     // take latest note text
+    //     $last = end($notes);
+    //     $action_text = string_display_links($last->note ?? '-');
+    // }
+
+    // --- read from custom field table ---
+    $action_text = get_cf_text_for_bug($bug_id, (int)$action_field_id);
+    if ($action_text === '') {
+        error_log("[PDF] No Action CF for bug {$bug_id} (field {$action_field_id})");
+        $action_text = '-';
     }
 
     $finish_ts = is_resolved_or_closed($row->status) ? (int)$row->last_updated : 0;
@@ -139,7 +186,7 @@ ob_start();
 
 <div id="pdf-header">
   <hr />
-  <div style="float: left;">CKNextBT • CKNext Bug Tracker</div>
+  <div style="float: left;">CAAM • Trouble Ticket</div>
   <div style="float: right;">Event <?= date('Y M d, H:i:s') ?></div>
 </div>
 
@@ -199,6 +246,29 @@ ob_start();
         <td class="label">FinishTime</td><td class="colon">:</td><td class="value"><?= fmt_dt($ev['finish_time']) ?></td>
         <td class="label"></td><td class="colon"></td><td class="value"></td>
       </tr>
+      <tr>
+        <td class="num"></td>
+        <td class="label">Event</td><td class="colon">:</td><td class="value"><?= dash_if_empty(h($ev['event'])) ?></td>
+      </tr>
+      <tr>
+      <td class="num"></td>
+      <td class="label">Action</td>
+      <td class="colon">:</td>
+      <!-- <td class="value" colspan="5" style="text-align:">
+        Runway 1 in used : ILS 14L DVOR/DME : NOTAM : A3842/25
+        <br>
+        Runway 2 in used : ILS 14R Active Server : No.01
+        <br>
+        Runway 3 in used : ILS 15 CMS: Serviceable
+        <br>
+        Obs. Light Bukit Sg Linau : SVC Obs. Light Bukit Lada: SVC
+        Times Check Obs.Light 1530 UTC
+      </td> -->
+
+      <td class="value" colspan="5">
+    <?= nl2br(h($ev['action'])) ?>
+  </td>
+    </tr>
     </table>
     <div class="rowline"></div>
   </div>
