@@ -96,6 +96,13 @@ if ($action_field_id === false) {
     error_log('[PDF] CF "Action" not found by name; falling back to id=3');
 }
 
+$action_field_id_date_completed = custom_field_get_id_from_name('Date Completed');
+if ($action_field_id_date_completed === false) {
+    // fallback if your field is known to be id=3
+    $action_field_id_date_completed = 2;
+    error_log('[PDF] CF "Action" not found by name; falling back to id=2');
+}
+
 foreach ($t_rows as $row) {
     $bug_id        = (int)$row->id;
     $category_name = $row->category_id ? category_get_name((int)$row->category_id) : '-';
@@ -120,6 +127,8 @@ foreach ($t_rows as $row) {
         $action_text = '-';
     }
 
+    $date_completed = get_cf_text_for_bug($bug_id, (int)$action_field_id_date_completed);
+
     $finish_ts = is_resolved_or_closed($row->status) ? (int)$row->last_updated : 0;
     $events[] = [
         'no'          => $counter++,
@@ -130,7 +139,7 @@ foreach ($t_rows as $row) {
         'action'      => $action_text,
         'date_occur'  => (int)$row->date_submitted,
         'fault'       => 'No', // adjust if you have a custom rule
-        'finish_time' => $finish_ts ?: null,
+        'finish_time' => $date_completed ?: null,
         'timestamp'   => (int)$row->last_updated,
         'crew'        => $assignee,
         'complainant' => $reporter,
